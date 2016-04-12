@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="aspectjml-lib/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="aspectjml-lib/aspectjml-release1.8.beta1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/classmate-1.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-validator-5.2.4.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-validator-annotation-processor-5.2.4.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-validator-cdi-5.2.4.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.el-2.2.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.el-api-2.2.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.ws.rs-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jboss-logging-3.2.1.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-client.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-common.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-container-servlet-core.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-container-servlet.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-media-jaxb.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-server.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
