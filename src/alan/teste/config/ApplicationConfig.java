@@ -5,12 +5,15 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+
 @ApplicationPath("/app")
 public class ApplicationConfig extends Application {
 	
 	@Override
 	public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<Class<?>>();
+		Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         return resources;
     }
@@ -22,7 +25,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+    	
         resources.add(alan.teste.controllers.UserControllerBV.class);
+        resources.add(alan.teste.config.PreconditionMapper.class);
     }
 
 }
