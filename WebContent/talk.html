@@ -1,0 +1,109 @@
+
+<!-- Always shows a header, even in smaller screens. -->
+<div ng-init="main()"  class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title"><i class="icon-cloud cloud"></i></span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+
+
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="actions">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="actions">
+                <li class="mdl-menu__item">About</li>
+                <li class="mdl-menu__item">Contact</li>
+                <li class="mdl-menu__item" ng-click="logoff()">Log Out</li>
+            </ul>
+
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">MOC</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="">About</a>
+            <a class="mdl-navigation__link" href="">Manual</a>
+            <a class="mdl-navigation__link" href="">Team</a>
+            <a class="mdl-navigation__link" href="http://bitly.com/1SFojvw">42</a>
+            <a class="mdl-navigation__link" ng-click="logoff()">Log Out</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--8-col">
+                <form ng-submit="sendMessage(selectedGroup)" class="talk_form">
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <div class="talk-screen" id="talk-screen"  >
+                                <div ng-repeat="message in messages">
+                                    <div   class="progress-talk {{getClassTalkBox(message)}}" >
+                                        <span >{{message.userGroup.mocUser.login}} at {{message.sendDate}} :</span>  
+                                        <p>
+                                            <label>{{message.text}}</label>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--11-col mdl-cell--3-col-phone mdl-cell--7-col-tablet">
+                            <!--
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label large-talk">
+                                <textarea rows=3 class="mdl-textfield__input" id="comment" ng-model="textMessage.text" ></textarea>
+                                <label for="comment" class="mdl-textfield__label">Write something</label>
+                            </div>
+                            -->
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label large-talk">
+                                <input class="mdl-textfield__input" type="text" id="comment" ng-model="textMessage.text" />
+                                <label class="mdl-textfield__label" for="comment">type a message...</label>
+                            </div>
+
+                        </div>
+
+                        <!-- Colored FAB button with ripple -->
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" type="submit">
+                            <i class="material-icons">send</i>
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+
+            <div ng-init="getGroups()" class="mdl-cell mdl-cell--4-col">
+                <!-- tabs-->
+                <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                    <div class="mdl-tabs__tab-bar ">
+                        <a class="mdl-tabs__tab" href="#conv">conversations</a>
+                        <a class="mdl-tabs__tab" href="#sea">search</a>
+
+                    </div>
+                    <div class="mdl-tabs__panel is-active" id="conv">
+                        <ul ng-repeat="group in groups" >
+                            <li class="contact_list" ng-click="getMessagesFromGroup(group)">{{group.name}}</li>
+                        </ul>
+                    </div>
+                    <div class="mdl-tabs__panel " id="sea">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="search_field" ng-model="search" ng-keyup="searchContact(search)" />
+                            <label class="mdl-textfield__label" for="search_field">search by email or username</label>
+                        </div>
+                        <ul ng-repeat="contact in contacts">
+                            <li>{{contact.name}}
+                                <button ng-click="addContact(contact)" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored add-contact mdl-color--green">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </main>
+</div>
+

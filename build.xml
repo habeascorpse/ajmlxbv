@@ -82,6 +82,7 @@
 	<target name="prepare">
 		<mkdir dir="${dest.dir}" />
 		<mkdir dir="${dest.dir.classes}" />
+                <mkdir dir="${dest.dir.classes}/META-INF" />
 	</target>
 
 	<!-- CLEANUP -->
@@ -124,7 +125,7 @@
 	<!-- COMPILATIONS -->
 	<!-- THE FUN HAS JUST BEGUN!! AspectJML team -->
 	<target name="ajmlc" depends="clean,prepare" description="Ant task responsible for compiling Java files annotated with AspectJML using ajmlc compiler version ${AspectJML}">
-		<ajmlc destdir="${dest.dir.classes}" srcdir="${src.dir}" sourcepathref="sourcepath" classpathref="classpath" inpath="inpath" print="false" source="1.8" ajweaver="ajc" defaultnonnull="true" norepresentserror="false" noexecutionsiteinstrumenation="false" callsiteinstrumenation="false" clientawarechecking="false" multiplespeccasechecking="false" crosscutting="true" nocontractchecking="false" crossrefs="${crossref.dir}" showweaveinfo="false" quiet="false" verbose="false" fork="false">
+		<ajmlc destdir="${dest.dir.classes}" srcdir="${src.dir}" sourcepathref="sourcepath" classpathref="classpath" inpath="inpath" print="false" source="1.8" ajweaver="ajc" defaultnonnull="false" norepresentserror="false" noexecutionsiteinstrumenation="false" callsiteinstrumenation="false" clientawarechecking="false" multiplespeccasechecking="false" crosscutting="true" nocontractchecking="false" crossrefs="${crossref.dir}" showweaveinfo="false" quiet="false" verbose="false" fork="false">
 		</ajmlc>
 	</target>
 
@@ -152,20 +153,27 @@
 	
 	<!-- Empacotar a aplicação -->
 	<target name="empacotar" depends="ajmlc" description="Ant task responsible for generate war package">
+            <copy todir="${dest.dir.classes}/META-INF" >
+                <fileset dir="src/META-INF" includes="*.xml">
+                    
+                </fileset>
+            </copy>
 		<war  destfile="${dest.dir}/${jar.dest}" webxml="WebContent/WEB-INF/web.xml"  >
 			<classes dir="${dest.dir.classes}" />
 			<lib dir="WebContent/WEB-INF/lib" />
 			<fileset dir="WebContent/"></fileset>
+			<metainf dir="src/META-INF"  ></metainf>
+                        
 			
 		</war>
 	</target>
 	
 	<target name="deploy" depends="empacotar" >
-		<copy file="${dest.dir}/${jar.dest}" todir="C:\Users\habea\apache-tomcat-8.0.33\apache-tomcat-8.0.33\webapps" />	
+		<copy file="${dest.dir}/${jar.dest}" todir="C:\Users\habea\glassfish\glassfish4\glassfish\domains\domain1\autodeploy" />	
 	</target>
 	
 	<target name="rodar-app" depends="deploy">
-		<exec executable="C:\Users\habea\apache-tomcat-8.0.33\apache-tomcat-8.0.33\bin\startup.bat" />
+		<exec executable="C:\Users\habea\apache-tomee-webprofile-7.0.0\bin\startup.bat" />
 	</target>
 
 	

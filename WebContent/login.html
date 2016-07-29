@@ -1,0 +1,53 @@
+<div class="moc-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <header class="moc-header mdl-layout__header mdl-layout__header--scroll mdl-color--red">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title"><i class="icon-cloud cloud"></i></span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a class="mdl-navigation__link" href="#/">SIGN UP</a>
+        </nav>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">MOC</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="#/">SIGN UP</a>
+      </nav>
+    </div>
+
+    <div class="moc-ribbon"></div>
+    <main class="moc-main mdl-layout__content">
+        <div class="moc-container mdl-grid">
+            <div class="mdl-cell mdl-cell--3-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+            <div class="moc-content mdl-cell mdl-cell--6-col mdl-cell--6-col-tablet mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800">
+                <h3>Login</h3>
+                <span class="alert">{{msg}}</span>
+                <form ng-submit="authenticate()">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="username" ng-model="user.login" />
+                        <label class="mdl-textfield__label" for="username">Username</label>
+                    </div>
+
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="password" id="passwd" ng-model="user.password" />
+                        <label class="mdl-textfield__label" for="passwd">password</label>
+                    </div>
+                    <div>
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" >
+                            submit
+                        </button>
+                    </div>
+                    
+
+                </form>
+            </div>
+        </div>
+        <footer class="moc-footer mdl-mini-footer">
+            <div class="mdl-mini-footer--left-section">
+                Copyright (c) 2015 Copyright MOC All Rights Reserved.
+            </div>
+        </footer>
+    </main>
+</div>
+
+

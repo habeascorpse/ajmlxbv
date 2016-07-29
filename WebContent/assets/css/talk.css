@@ -1,0 +1,43 @@
+
+.mdl-layout__container {
+
+}
+.talk-panel{
+
+}
+.talk-screen{
+    background: #fcf7d7;
+    opacity: .8;
+    height: 430px;
+    overflow-y: auto;
+    border: solid 1px #ccc;
+    width: 100%;
+}
+
+.large-talk{width: 100%;}
+.progress-talk{
+    margin: .5em;
+}
+.progress-talk span{
+    color: tomato;
+    font-weight: bolder;
+    font-family: monospace;
+}
+.progress-talk label{
+    color: #333;
+    font-weight: bold;
+}
+
+.their {
+
+    border-radius: 5px;
+    background: #fffcf1;
+
+}
+.me {
+
+    border-radius: 5px;
+    background: #cdffad;
+
+
+}

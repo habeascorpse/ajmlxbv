@@ -8,18 +8,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.process.internal.RequestScoped;
-import org.jmlspecs.ajmlrac.runtime.JMLEntryDefaultPreconditionError;
 
 import alan.teste.entities.Message;
+import alan.teste.services.MessageService;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
 
 
 @Path("user")
-@RequestScoped
+@Stateless
 public class UserControllerBV {
 	
 	private /*@ spec_public @*/ int i;
+        
+        @EJB
+        private MessageService messageService;
 	
 	public UserControllerBV() {
 		i = 7;
@@ -27,14 +31,16 @@ public class UserControllerBV {
 	
 	
 	
-	@Path("get/{o}")
+	@Path("/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	//@ requires o < 30 && o > 0;
 	//@ ensures o < i;
-	public Response getAll(@PathParam("o") int o) {
+	public Response getAll(@PathParam("id") int o) {
+            
+            int p = messageService.calcular(o);
 		
-		Message message = new Message("201","criado","created");
+		Message message = new Message("201","criado","created: "+ p);
 		//String users = "{user: 'alan', password: '123456'}";
 		return Response.ok(message).build();
 		

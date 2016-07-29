@@ -5,8 +5,6 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
 
 @ApplicationPath("/app")
 public class ApplicationConfig extends Application {
@@ -28,6 +26,9 @@ public class ApplicationConfig extends Application {
     	
         resources.add(alan.teste.controllers.UserControllerBV.class);
         resources.add(alan.teste.config.PreconditionMapper.class);
+        resources.add(alan.teste.controllers.UserController.class);
+        resources.add(alan.teste.controllers.AuthenticationEndpoint.class);
+        resources.add(alan.teste.config.auth.AuthenticationFilter.class);
     }
 
 }

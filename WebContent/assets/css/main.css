@@ -1,0 +1,142 @@
+/*
+  MOC project
+  author: bruce albuquerque
+  email: brucealbuquerque@yahoo.com.br
+*/
+.wrapper{
+    font-family: "Lato";
+    width: 70%;
+    margin: 0 auto;
+
+
+
+}
+
+.divview {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  
+  background: -webkit-linear-gradient(90deg, #ECE9E6 10%, #FFFFFF 90%); /* Chrome 10+, Saf5.1+ */
+  background:    -moz-linear-gradient(90deg, #ECE9E6 10%, #FFFFFF 90%); /* FF3.6+ */
+  background:     -ms-linear-gradient(90deg, #ECE9E6 10%, #FFFFFF 90%); /* IE10 */
+  background:      -o-linear-gradient(90deg, #ECE9E6 10%, #FFFFFF 90%); /* Opera 11.10+ */
+  background:         linear-gradient(90deg, #ECE9E6 10%, #FFFFFF 90%); /* W3C */
+        
+}
+
+main{
+    width: 59%;
+    float: left;
+    padding: 0 .5%;
+}
+main h1, h3{
+    margin: 0;
+}
+
+main h1{
+    margin-top: .6em;
+}
+main i:hover{
+    color: tomato;
+}
+.tabs {
+    width: 40%;
+    float: left;
+    list-style: none;
+    position: relative;
+    text-align: left;
+}
+.tabs ul > li {
+    float: left;
+    display: block;
+}
+.tabs .radio-tab {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+.tabs .label-tab {
+    //display: block;
+    color: #333;
+    border-radius: 2px 2px 0 0;
+    font-size: 1.1em;
+    text-transform: capitalize;
+    cursor: pointer;
+    position: relative;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    top: 13px;
+    right: -160px;
+    padding: 0.5em;
+}
+
+.tabs .label-tab:last-child{
+    width: 100%;
+}
+.tabs .label-tab:hover {
+    text-decoration: underline;
+}
+.tabs .tab-content {
+    z-index: 2;
+    padding: 6%;
+    display: none;
+    overflow: hidden;
+    width: 100%;
+    font-size: 17px;
+    line-height: 25px;
+    position: absolute;
+    top:63px;
+    left: 0;
+    background: #f5f5f5;
+}
+.tabs [id^="tab"]:checked + .label-tab {
+    padding: .5em 1.2em;
+    color: #3498DB;
+    background: #f5f5f5;
+}
+.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+    display: block;
+}
+.tab-content h2{
+    margin: .5em 0;
+    color: #444;
+    font-family: "Roboto";
+    font-weight: 300;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+/*form sing in*/
+form label{
+    display: block;
+    font-size: .8em;
+    color: #888;
+}
+form > div{
+    margin: .5em 0 0 0;
+}
+
+form input[type="radio"] span{
+    color: #333;
+    font-size: .8em;
+}
+select{
+    background: #fff;
+}
+.input, .button{
+    width: 100%;
+    color: #444;
+    font-size: .9em;
+    outline: none;
+    border: solid 1px #ccc;
+    padding: .7em;
+    border-radius: 3px;
+}
+.submit{
+    background: #3498DB;
+    color: #fff;
+}

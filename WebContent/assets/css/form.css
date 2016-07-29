@@ -1,0 +1,29 @@
+/* 
+    Created on : 23/05/2015, 01:56:48
+    Author     : bruce
+*/
+
+/*Style for page "HOME" */
+input{
+    display: block;
+}
+label{ display: block; padding: .4em 0; color: #777;}
+input{
+    width: 100%;
+    padding: .8em .5em;
+    border: solid 1px #ccc;
+}
+
+
+.btn-submit{
+    color:#fff;
+    font-size: 1em;
+    border-radius:4px;
+    padding: .9em;
+    // background-image: linear-gradient(to bottom, #cf2b4f, #980021);
+    background-image: linear-gradient(to bottom, #a1de6f, #559421);
+}
+.btn-submit:hover{
+    //background-image: linear-gradient(to bottom, #980021, #cf2b4f);
+    background-image: linear-gradient(to bottom, #559421, #a1de6f);
+}
