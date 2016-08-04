@@ -63,7 +63,7 @@ public class MocMessage implements Serializable {
         return id;
     }
 
-    public String getText() {
+    public /*@ pure @*/ String getText() {
         return text;
     }
 

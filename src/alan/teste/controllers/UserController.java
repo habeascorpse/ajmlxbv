@@ -5,6 +5,7 @@
  */
 package alan.teste.controllers;
 
+import alan.teste.config.AuthenticatedUser;
 import alan.teste.config.Secured;
 import alan.teste.entities.Country;
 import alan.teste.entities.MocUser;
@@ -36,33 +37,43 @@ public class UserController implements Serializable {
     private UserService userModel;
     @Inject
     private CountryService countryModel;
+    
+    @Inject
+    @AuthenticatedUser
+    private MocUser authenticatedUser;
+    
+    
 
-    @Path("/get/all")
+    @Path("/")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured
     public Response getAllUsers() {
+        System.out.println("Usuário:"+authenticatedUser);
 
         return Response.ok(userModel.getAll().toArray(new MocUser[]{})).build();
 
     }
 
-    @Path("/get/{id}")
+    @Path("/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public MocUser getById(@PathParam("id") String id) {
+    //@ requires id > 0;
+    public MocUser getById(@PathParam("id") long id) {
 
-        Long cod = Long.parseLong(id);
+        
+        System.out.println("Usuário:"+authenticatedUser.getName());
 
-        return userModel.getByID(cod);
+        return userModel.getByID(id);
 
     }
 
-    @Path("/create")
+    @Path("/")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(MocUser user) {
-        System.out.println(user.getCountry());
+        
         userModel.createUser(user);
         
         return Response.status(Response.Status.CREATED).build();
@@ -94,14 +105,5 @@ public class UserController implements Serializable {
 
     }
 
-    @Path("authenticate")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response authenticate(MocUser user) {
-
-        return Response.ok().build();
-
-    }
 
 }

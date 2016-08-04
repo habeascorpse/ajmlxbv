@@ -1,28 +1,55 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package alan.teste.services;
 
-import alan.teste.entities.MocUser;
-import java.io.Serializable;
-import javax.ejb.LocalBean;
+import alan.teste.entities.MocMessage;
+import alan.teste.entities.UserGroup;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ *
+ * @author alan
+ */
 @Stateless
-@LocalBean
-public class MessageService implements Serializable {
+public class MessageService extends GenericService<MocMessage> {
     
-    @PersistenceContext(unitName = "recyclegramPU")
+    @PersistenceContext
     private EntityManager em;
+    
+    private static final Integer maxResult = 50;
 
     public MessageService() {
+        super(MocMessage.class);
     }
     
-    public int calcular(int o) {
+    public List<MocMessage> getMessageByGroup(UserGroup userGroup) {
         
+        List<MocMessage> list = getEntityManager().createNamedQuery("Message.getMessagesByGroup")
+                .setParameter("group", userGroup.getMocGroup())
+                .setMaxResults(maxResult)
+                .getResultList();
         
-        em.find(MocUser.class, 1L);
+        Collections.reverse(list);
         
-        return o * 3;
+        return list;
+        
+    }
+    
+    public void sendMessage(MocMessage message) {
+        this.save(message);
+        
     }
 
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+    
 }

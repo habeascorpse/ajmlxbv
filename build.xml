@@ -125,7 +125,7 @@
 	<!-- COMPILATIONS -->
 	<!-- THE FUN HAS JUST BEGUN!! AspectJML team -->
 	<target name="ajmlc" depends="clean,prepare" description="Ant task responsible for compiling Java files annotated with AspectJML using ajmlc compiler version ${AspectJML}">
-		<ajmlc destdir="${dest.dir.classes}" srcdir="${src.dir}" sourcepathref="sourcepath" classpathref="classpath" inpath="inpath" print="false" source="1.8" ajweaver="ajc" defaultnonnull="false" norepresentserror="false" noexecutionsiteinstrumenation="false" callsiteinstrumenation="false" clientawarechecking="false" multiplespeccasechecking="false" crosscutting="true" nocontractchecking="false" crossrefs="${crossref.dir}" showweaveinfo="false" quiet="false" verbose="false" fork="false">
+		<ajmlc destdir="${dest.dir.classes}" srcdir="${src.dir}" sourcepathref="sourcepath" classpathref="classpath" inpath="inpath" print="false" source="1.8" ajweaver="ajc" defaultnonnull="false" norepresentserror="false" noexecutionsiteinstrumenation="false" callsiteinstrumenation="false" clientawarechecking="false" multiplespeccasechecking="false"  nocontractchecking="false" crossrefs="${crossref.dir}" showweaveinfo="false" quiet="false" verbose="false" fork="false">
 		</ajmlc>
 	</target>
 

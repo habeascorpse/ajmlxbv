@@ -5,11 +5,14 @@
  */
 package alan.teste.config.auth;
 
+import alan.teste.config.AuthenticatedUser;
 import alan.teste.config.Secured;
 import com.auth0.jwt.JWTVerifier;
 import java.io.IOException;
 import java.util.Map;
 import javax.annotation.Priority;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -26,6 +29,11 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+    
+    
+    @AuthenticatedUser
+    @Inject
+    Event<String> userAuthenticatedEvent;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -36,6 +44,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         // Check if the HTTP Authorization header is present and formatted correctly 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            System.out.println("Não contém no header o token!");
             throw new NotAuthorizedException("Authorization header must be provided");
         }
 
@@ -45,7 +54,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            validateToken(token);
+            String username = validateToken(token);
+            
+            userAuthenticatedEvent.fire(username);
 
         } catch (Exception e) {
             requestContext.abortWith(
@@ -53,13 +64,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void validateToken(String token) throws Exception {
+    private String validateToken(String token) throws Exception {
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
         final String secret = "secret";
 
         final JWTVerifier verifier = new JWTVerifier(secret);
         final Map<String, Object> claims = verifier.verify(token);
-
+        
+        return (String) claims.get("username");
     }
 }

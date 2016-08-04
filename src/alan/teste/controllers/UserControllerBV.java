@@ -30,21 +30,5 @@ public class UserControllerBV {
 	}
 	
 	
-	
-	@Path("/{id}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	//@ requires o < 30 && o > 0;
-	//@ ensures o < i;
-	public Response getAll(@PathParam("id") int o) {
-            
-            int p = messageService.calcular(o);
-		
-		Message message = new Message("201","criado","created: "+ p);
-		//String users = "{user: 'alan', password: '123456'}";
-		return Response.ok(message).build();
-		
-	}
-	
 
 }

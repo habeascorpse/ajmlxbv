@@ -24,9 +24,13 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
     	
-        resources.add(alan.teste.controllers.UserControllerBV.class);
-        resources.add(alan.teste.config.PreconditionMapper.class);
+        resources.add(alan.teste.config.Mapper.PreconditionMapper.class);
+        resources.add(alan.teste.config.Mapper.PostconditionMapper.class);
+        resources.add(alan.teste.config.Mapper.UnauthorizedMapper.class);
         resources.add(alan.teste.controllers.UserController.class);
+        resources.add(alan.teste.controllers.ContactController.class);
+        resources.add(alan.teste.controllers.GroupController.class);
+        resources.add(alan.teste.controllers.MessageController.class);
         resources.add(alan.teste.controllers.AuthenticationEndpoint.class);
         resources.add(alan.teste.config.auth.AuthenticationFilter.class);
     }

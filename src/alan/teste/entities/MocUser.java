@@ -103,6 +103,7 @@ public class MocUser implements Serializable {
         return name;
     }
     
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -194,6 +195,12 @@ public class MocUser implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "MocUser{" + "id=" + id + ", name=" + name + ", email=" + email + ", login=" + login + ", password=" + password + ", contacts=" + contacts + ", listGroups=" + listGroups + ", country=" + country + ", status=" + status + '}';
+    }
+    
     
     
     

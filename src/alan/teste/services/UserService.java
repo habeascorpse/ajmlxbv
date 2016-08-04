@@ -22,66 +22,60 @@ import javax.persistence.PersistenceContext;
  * @author habea
  */
 @Stateless
-public class UserService extends GenericService<MocUser>  {
-    
+public class UserService extends GenericService<MocUser> {
+
     @PersistenceContext
     private EntityManager em;
 
     public UserService() {
         super(MocUser.class);
     }
-    
+
     @EJB
     private GroupService groupService;
     @EJB
     private ConfirmationModel confirmationModel;
-    
-    
+
     public MocUser getByLogin(String login) {
 
-        try {
-            return (MocUser) getEntityManager()
-                    .createNamedQuery("User.getByLogin")
-                    .setParameter("login", login)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (MocUser) getEntityManager()
+                .createNamedQuery("User.getByLogin")
+                .setParameter("login", login)
+                .getSingleResult();
 
     }
-    
+
     public List<MocUser> search(String search, MocUser user) {
 
         try {
-            
-            List<MocUser> contacts =  getEntityManager()
+
+            List<MocUser> contacts = getEntityManager()
                     .createNamedQuery("User.search")
-                    .setParameter("search", "%"+search+"%")
+                    .setParameter("search", "%" + search + "%")
                     .getResultList();
             contacts.remove(user);
             contacts.removeAll(user.getContacts());
-            
+
             return contacts;
-            
+
         } catch (NoResultException e) {
             return new ArrayList<MocUser>();
         }
 
     }
-    
+
     public MocUser Authenticate(String login, String password) {
-        
+
         password = HashGenerator.generateHash(password);
 
-        
-            return (MocUser) getEntityManager()
-                    .createNamedQuery("User.authenticate")
-                    .setParameter("login", login)
-                    .setParameter("password", password)
-                    .getSingleResult();
+        return (MocUser) getEntityManager()
+                .createNamedQuery("User.authenticate")
+                .setParameter("login", login)
+                .setParameter("password", password)
+                .getSingleResult();
 
     }
-    
+
     public MocUser getByEmail(String email) {
 
         try {
@@ -94,15 +88,15 @@ public class UserService extends GenericService<MocUser>  {
         }
 
     }
-    
+
     private void sendMailConfirmation(ConfirmationUser confirm) {
-        
+
         // Todo Enviar email com confirmação de usuário e senha Moc23P)(44 mocsysbr
-        String msgMail = "Hello "+ confirm.getMocUser().getName() +", Thank You for choosen MOC, a PQP member<br />"
+        String msgMail = "Hello " + confirm.getMocUser().getName() + ", Thank You for choosen MOC, a PQP member<br />"
                 + "please click <a href=\"http://cloudmessenger.com.br/moc/rs/users/confirm/" + confirm.getConfirmationHash() + "\"> here </a> to confirm your account!";
         SendMail mail = new SendMail("CloudMessenger", confirm.getMocUser().getEmail(), "MOC - Account Confirmation", msgMail);
         mail.start();
-        
+
     }
 
     public MocUser createUser(MocUser user) {
@@ -114,76 +108,77 @@ public class UserService extends GenericService<MocUser>  {
         System.out.println(user.getPassword());
         user.setPassword(HashGenerator.generateHash(user.getPassword()));
         ConfirmationUser confirmation = new ConfirmationUser(user);
-        
+
         confirmationModel.merge(confirmation);
-        
+
         this.sendMailConfirmation(confirmation);
 
         return user;
 
-        
     }
-    
-    
+
     public boolean confirmUser(String hash) {
         ConfirmationUser confirm = confirmationModel.getByHash(hash);
         if (confirm != null) {
             confirm.getMocUser().setStatus(1);
             this.merge(confirm.getMocUser());
-            
+
             confirmationModel.remove(confirm);
             return true;
-        }
-        else        
+        } else {
             return false;
+        }
     }
-    
+
     private Boolean hasContact(MocUser user, MocUser contact) {
-        if (user.getId().equals(contact.getId()))
+        if (user.getId().equals(contact.getId())) {
             return Boolean.TRUE;
-        
-        for (MocUser mu :user.getContacts())
-            if (mu.getId().equals(contact.getId()))
+        }
+
+        for (MocUser mu : user.getContacts()) {
+            if (mu.getId().equals(contact.getId())) {
                 return Boolean.TRUE;
-        
+            }
+        }
+
         return Boolean.FALSE;
     }
-    
+
     public void addContact(MocUser user, MocUser contact) {
-        
-        if (hasContact(user, contact))
+
+        if (hasContact(user, contact)) {
             throw new RuntimeException("Contato já adicionado");
-        
-        if (user.getContacts() == null)
+        }
+
+        if (user.getContacts() == null) {
             user.setContacts(new ArrayList<MocUser>());
-        
+        }
+
         user.getContacts().add(contact);
-        
-        user  = merge(user);
+
+        user = merge(user);
         confirmContact(contact, user);
     }
-    
+
     public void confirmContact(MocUser user, MocUser contact) {
-        
+
         if (!hasContact(user, contact)) {
-            if (user.getContacts() == null)
+            if (user.getContacts() == null) {
                 user.setContacts(new ArrayList<MocUser>());
+            }
             user.getContacts().add(contact);
             user = merge(user);
             groupService.newGroupFromContactConfirmation(user, contact);
-            
-            
-        }
-        else {
+
+        } else {
             throw new RuntimeException("Contato não encontrado");
         }
-        
-        
+
     }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
