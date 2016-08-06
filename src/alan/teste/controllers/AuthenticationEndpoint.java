@@ -16,6 +16,7 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -32,28 +33,25 @@ public class AuthenticationEndpoint {
     protected /*@ spec_public @*/ String token;
 
     
-    //@ requires username.length() >= 4 && username.length() <= 20;
-    //@ requires password.length() >= 4 && password.length() <= 20;
-    //@ ensures token != null && token.length() > 0;
+    
     @POST
-    @Produces("application/json")
-    @Consumes("application/x-www-form-urlencoded")
-    public Response authenticateUser(@FormParam("username") String username,
-            @FormParam("password") String password) throws Exception {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response authenticateUser(MocUser user) throws Exception {
 
             try {
             // Authenticate the user using the credentials provided
-                authenticate(username, password);
+                System.out.println("login:"+user.getLogin()+" senha:"+user.getPassword());
+                authenticate(user.getLogin(), user.getPassword());
             }
             catch (Exception ex) {
                 throw new NotAuthorizedException(Response.status(Response.Status.UNAUTHORIZED).build());
             }
 
             // Issue a token for the user
-            token = issueToken(username);
+            token = issueToken(user.getLogin());
 
             // Return the token on the response
-            return Response.ok(token).build();
+            return Response.ok().header("Authorization", token).build();
 
         
     }

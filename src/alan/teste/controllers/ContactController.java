@@ -67,6 +67,7 @@ public class ContactController {
 
     
     @GET
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response findUsers(@QueryParam("search") String search) {
 

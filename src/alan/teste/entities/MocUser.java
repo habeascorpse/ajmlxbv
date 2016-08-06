@@ -50,11 +50,9 @@ public class MocUser implements Serializable {
     private Long id;
     
     @Column(length = 255)
-    @NotNull
     private String name;
     
     @Column(unique = true)
-    @NotNull
     private String email;
     
     @Column(unique = true)
@@ -99,12 +97,11 @@ public class MocUser implements Serializable {
     }
     
 
-    public String getName() {
+    public /*@ pure @*/ String getName() {
         return name;
     }
     
-    @XmlTransient
-    public String getPassword() {
+    public  String getPassword() {
         return password;
     }
 
@@ -142,7 +139,7 @@ public class MocUser implements Serializable {
         this.email = email;
     }
 
-    public String getLogin() {
+    public  String getLogin() {
         return login;
     }
 

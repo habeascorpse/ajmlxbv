@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-MocApp.controller('MessageController', function ($scope, $http, $location, State, $cookies) {
+MocApp.controller('MessageController', function ($scope, $http, $location, State, $cookies, $window) {
 
     //$scope.voucher = State.formData['voucher'];
     $scope.textMessage = {text: ""};
@@ -13,8 +13,8 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
     $scope.getGroups = function () {
 
 
-        $http.get(State.formData['url'] + 'group/all/' + $cookies.get('voucher')).
-                success(function (data, status, headers, config) {
+        $http.get(State.formData['url'] + 'group/').
+                success(function (data) {
                     $scope.groups = data;
 
                 })
@@ -32,8 +32,8 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
         if ((group !== null) && (group.name !== null)) {
 
 
-            $http.get(State.formData['url'] + 'message/get/' + group.name + '/' + $cookies.get('voucher')).
-                    success(function (data, status, headers, config) {
+            $http.get(State.formData['url'] + 'message?group=' + group.name).
+                    success(function (data) {
                         $scope.messages = data;
                         $scope.messages.forEach(function(entry) {
                             entry.sendDate = new Date(entry.sendDate);
@@ -55,7 +55,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
     $scope.sendMessage = function (group) {
         if ((group !== null) && (group.name !== null)) {
 
-            $http.post(State.formData['url'] + 'message/send/' + group.name + '/' + $cookies.get('voucher'), $scope.textMessage).
+            $http.post(State.formData['url'] + 'message?group=' + group.name, $scope.textMessage).
                     success(function (data, status, headers, config) {
                         $scope.textMessage.text = "";
                         //$scope.getMessagesGromGroup(group);
@@ -71,8 +71,8 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
 
     $scope.searchContact = function (search) {
         $scope.contacts = null;
-        $http.get(State.formData['url'] + 'contact/find/' + search + '/' + $cookies.get('voucher')).
-                success(function (data, status, headers, config) {
+        $http.get(State.formData['url'] + 'contact?search=' + search ).
+                success(function (data) {
                     $scope.contacts = data;
 
                 })
@@ -85,10 +85,6 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
 
     $scope.main = function () {
         
-        if ($cookies.get('voucher') === '' || $cookies.get('voucher') === null ) {
-            $location.path('login').replace();
-        }
-
         $scope.getMessagesFromGroup($scope.selectedGroup);
         $scope.getGroups();
         setTimeout($scope.main, 2000);
@@ -101,7 +97,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
         
         var req = {
             method: 'POST',
-            url: State.formData['url'] + 'contact/add/' + $cookies.get('voucher'),
+            url: State.formData['url'] + 'contact',
             headers: {
                 'Content-Type': 'text/plain'
             },
@@ -129,7 +125,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
     };
     
     $scope.logoff = function() {
-        $cookies.put('voucher','');
+        delete $window.sessionStorage.token;
         $location.path('login').replace();  
     };
     

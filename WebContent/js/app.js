@@ -5,10 +5,13 @@
  */
 
 var MocApp = angular.module('MocApp', ['ngRoute', 'ngCookies']);
-MocApp.config(function ($routeProvider, $locationProvider)
+MocApp.config(function ($routeProvider, $locationProvider, $httpProvider)
 {
     // remove o # da url
     //$locationProvider.html5Mode(true);
+    
+    $httpProvider.interceptors.push('tokenInterceptor');
+    
 
     $routeProvider
 
@@ -38,7 +41,6 @@ MocApp.config(function ($routeProvider, $locationProvider)
 MocApp.factory('State', function ($cookies) {
     return {
         formData: {
-            voucher: '',
             url: 'http://localhost:8080/hemr/app/'
 
         },

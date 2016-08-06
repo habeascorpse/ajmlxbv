@@ -1,6 +1,6 @@
 
 MocApp.controller('UserController', function ($scope, $http, $location, State, $cookies) {
-    $scope.voucher = State.formData['voucher'];
+    
 
     $scope.user = {
         name: '',
@@ -17,7 +17,7 @@ MocApp.controller('UserController', function ($scope, $http, $location, State, $
         $scope.user.country["id"] = $scope.selectedCountry;
         var req = {
             method: 'POST',
-            url: State.formData['url'] + 'users/create',
+            url: State.formData['url'] + 'users',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -56,13 +56,10 @@ MocApp.controller('UserController', function ($scope, $http, $location, State, $
     
     $scope.authenticate = function() {
         
-        $cookies.put('voucher','');
         
-        $http.post(State.formData['url'] + 'users/authenticate',$scope.user ).
-        success(function(data, status, headers, config) {
-            $scope.voucher = data;
-            $cookies.put('voucher',data);
-            State.formData['voucher'] = data;
+        
+        $http.post(State.formData['url'] + 'authentication',$scope.user ).
+        success(function() {
             $location.path('message').replace();
             $cookies.put('user',$scope.user.login);
         })
