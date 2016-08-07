@@ -19,6 +19,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,10 +41,12 @@ public class GroupController implements Serializable {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public Response getAllGroups() {
+    //@ requires max >= 0;
+    //@ ensures \result.length <= max;
+    public MocGroup[] getAllGroups(@QueryParam("maxResult") int max) {
 
-        MocGroup groups[] = groupModel.getAllFromUser(authenticatedUser).toArray(new MocGroup[]{});
-        return Response.ok(groups).build();
+        MocGroup groups[] = groupModel.getAllFromUser(authenticatedUser, max).toArray(new MocGroup[]{});
+        return groups;
 
     }
 

@@ -30,10 +30,13 @@ public class GroupService extends GenericService<MocGroup> {
         super(MocGroup.class);
     }
 
-    public List<MocGroup> getAllFromUser(MocUser user) {
+    public List<MocGroup> getAllFromUser(MocUser user, int max) {
         
+        if (max == 0)
+            max = 10;
             List<MocGroup> groups = getEntityManager().createNamedQuery("Group.getAllByUser")
                     .setParameter("user", user)
+                    .setMaxResults(max)
                     .getResultList();
             return groups;
         
@@ -52,6 +55,7 @@ public class GroupService extends GenericService<MocGroup> {
         return (MocGroup) getEntityManager().createNamedQuery("Group.getAllByUserAndName")
                 .setParameter("user", user)
                 .setParameter("group", groupName)
+                .setMaxResults(50)
                 .getSingleResult();
         
     }

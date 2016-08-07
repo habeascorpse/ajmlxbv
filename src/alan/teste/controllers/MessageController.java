@@ -18,6 +18,7 @@ import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,18 +50,24 @@ public class MessageController {
 
     @Inject
     private UserGroupService userGroupService;
+    
+    private /*@ spec_public */ List<MocMessage> lista;
 
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MocMessage> getMessageByGroup(@QueryParam("group") String groupName) throws NoContentException {
+    //@ requires groupName.length() > 0;
+    //@ requires max > 0;
+    //@ ensures \result.size() <= max;
+    public List<MocMessage> getMessageByGroup(@QueryParam("group") String groupName,@QueryParam("maxResult") int max) throws NoContentException {
 
+        
         MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
         if (group != null) {
 
             UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, group);
-            List<MocMessage> lista = messageService.getMessageByGroup(userGroup);
-
+            lista = messageService.getMessageByGroup(userGroup, max);
+            
             return lista;
         } else {
             throw new NoContentException("");
@@ -71,10 +78,9 @@ public class MessageController {
     @POST
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
-    //@ requires message.getText().length() > 5;
-    //@ requires message.getText().length() < 20;
+    //@ requires message.getText().length() > 1;
+    //@ requires message.getText().length() < 255;
     public Response sendMessage(MocMessage message, @QueryParam("group") String groupName) {
-        message.getText().length();
         MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
         if (group != null) {
             message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, group));

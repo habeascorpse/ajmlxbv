@@ -5,15 +5,15 @@
  */
 MocApp.controller('MessageController', function ($scope, $http, $location, State, $cookies, $window) {
 
-    //$scope.voucher = State.formData['voucher'];
+    
     $scope.textMessage = {text: ""};
     $scope.selectedGroup = {name: null};
-    messageTime = 5000; // 5 seconds
+    messageTime = 1000; // 1 seconds
 
     $scope.getGroups = function () {
 
 
-        $http.get(State.formData['url'] + 'group/').
+        $http.get(State.formData['url'] + 'group?maxResult=10').
                 success(function (data) {
                     $scope.groups = data;
 
@@ -32,7 +32,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
         if ((group !== null) && (group.name !== null)) {
 
 
-            $http.get(State.formData['url'] + 'message?group=' + group.name).
+            $http.get(State.formData['url'] + 'message?group=' + group.name+'&maxResult='+20).
                     success(function (data) {
                         $scope.messages = data;
                         $scope.messages.forEach(function(entry) {

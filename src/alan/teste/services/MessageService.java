@@ -22,14 +22,16 @@ public class MessageService extends GenericService<MocMessage> {
     
     @PersistenceContext
     private EntityManager em;
-    
-    private static final Integer maxResult = 50;
 
     public MessageService() {
         super(MocMessage.class);
     }
     
-    public List<MocMessage> getMessageByGroup(UserGroup userGroup) {
+    public List<MocMessage> getMessageByGroup(UserGroup userGroup, int maxResult) {
+        
+        if (maxResult == 0) {
+            maxResult = 50;
+        }
         
         List<MocMessage> list = getEntityManager().createNamedQuery("Message.getMessagesByGroup")
                 .setParameter("group", userGroup.getMocGroup())
