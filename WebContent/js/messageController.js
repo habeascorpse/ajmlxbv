@@ -32,7 +32,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
         if ((group !== null) && (group.name !== null)) {
 
 
-            $http.get(State.formData['url'] + 'message?group=' + group.name+'&maxResult='+20).
+            $http.get(State.formData['url'] + 'message?group=' + group.name+'&maxResult='+50).
                     success(function (data) {
                         $scope.messages = data;
                         $scope.messages.forEach(function(entry) {

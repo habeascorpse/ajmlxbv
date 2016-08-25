@@ -36,6 +36,9 @@ public class AuthenticationEndpoint {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    //@ requires user.getLogin().length() >= 4;
+    //@ requires user.getPassword().length() >= 4;
+    //@ ensures token.length() > 10;
     public Response authenticateUser(MocUser user) throws Exception {
 
             try {
