@@ -8,7 +8,9 @@ package alan.teste.controllers;
 import alan.teste.entities.MocUser;
 import alan.teste.services.UserService;
 import com.auth0.jwt.JWTSigner;
+import com.auth0.jwt.JWTVerifier;
 import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -18,6 +20,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.jmlspecs.lang.annotation.Pure;
+import org.jmlspecs.lang.annotation.SpecPublic;
 
 /**
  *
@@ -38,7 +42,7 @@ public class AuthenticationEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     //@ requires user.getLogin().length() >= 4;
     //@ requires user.getPassword().length() >= 4;
-    //@ ensures token.length() > 10;
+    //@ ensures validateToken(token) ;
     public Response authenticateUser(MocUser user) throws Exception {
 
             try {
@@ -86,5 +90,24 @@ public class AuthenticationEndpoint {
         claims.put("iat", iat);
 
         return signer.sign(claims);
+    }
+    
+    @SpecPublic
+    @Pure
+    public boolean validateToken(String token) {
+        
+        try {
+            // Check if it was issued by the server and if it's not expired
+            // Throw an Exception if the token is invalid
+            final String secret = "secret";
+
+            final JWTVerifier verifier = new JWTVerifier(secret);
+            final Map<String, Object> claims = verifier.verify(token);
+        
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 }
