@@ -44,7 +44,7 @@ public class AuthenticationEndpoint {
     //@ requires user.getPassword().length() >= 4;
     //@ ensures validateToken(token) ;
     public Response authenticateUser(MocUser user) throws Exception {
-
+            System.out.println("Tamanho do login:"+user.getLogin().length());
             try {
             // Authenticate the user using the credentials provided
                 System.out.println("login:"+user.getLogin()+" senha:"+user.getPassword());
