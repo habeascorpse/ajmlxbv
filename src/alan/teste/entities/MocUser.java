@@ -101,7 +101,7 @@ public class MocUser implements Serializable {
         return name;
     }
     
-    public  String getPassword() {
+    public /*@ pure @*/ String getPassword() {
         return password;
     }
 
@@ -139,7 +139,7 @@ public class MocUser implements Serializable {
         this.email = email;
     }
 
-    public  String getLogin() {
+    public /*@ pure @*/  String getLogin() {
         return login;
     }
 

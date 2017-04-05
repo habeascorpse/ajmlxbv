@@ -36,8 +36,10 @@ public class AuthenticationEndpoint {
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    //@ requires user.getLogin().length() >= 10;
+    //@ requires user.getPassword().length() >= 10;
     public Response authenticateUser(MocUser user) throws Exception {
-
+            System.out.println("Tamanho do login:"+user.getLogin().length());
             try {
             // Authenticate the user using the credentials provided
                 System.out.println("login:"+user.getLogin()+" senha:"+user.getPassword());
