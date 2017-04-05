@@ -72,6 +72,7 @@ public class UserController implements Serializable {
     @Path("/")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    //@ requires user.getLogin().length() > 4;
     public Response createUser(MocUser user) {
         
         userModel.createUser(user);

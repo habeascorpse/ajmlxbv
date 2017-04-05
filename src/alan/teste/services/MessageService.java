@@ -42,7 +42,7 @@ public class MessageService extends GenericService<MocMessage> {
         
         return list;
         
-    }
+    } 
     
     public void sendMessage(MocMessage message) {
         this.save(message);

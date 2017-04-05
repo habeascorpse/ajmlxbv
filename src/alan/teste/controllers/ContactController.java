@@ -40,6 +40,7 @@ public class ContactController {
     
     @POST
     @Secured
+    //@ requires contact.length() > 4;
     public Response addContact(@QueryParam("contact") String contact) {
         
         MocUser usuario = userService.getByID(authenticatedUser.getId());
@@ -57,7 +58,8 @@ public class ContactController {
     @POST
     @Secured
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response aconfirmContact(String contact) {
+    //@ requires contact.length() > 4;
+    public Response confirmContact(String contact) {
 
         MocUser userContact = userService.getByLogin(contact);
         userService.confirmContact(authenticatedUser, userContact);
@@ -69,6 +71,8 @@ public class ContactController {
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
+    //@ requires search.length() >= 1;
+    //@ requires search.length() < 20;
     public Response findUsers(@QueryParam("search") String search) {
 
         return Response.ok(userService.search(search, authenticatedUser).toArray(new MocUser[]{})).build();
