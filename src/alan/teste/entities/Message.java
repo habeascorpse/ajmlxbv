@@ -19,6 +19,10 @@ public class Message implements Serializable {
     private String message;
 
     private String parameter;
+    
+    private String type;
+    
+    private String typeName;
 
     public String getErrorCode() {
         return errorCode;
@@ -65,6 +69,17 @@ public class Message implements Serializable {
         this.message = message;
         this.parameter = parameter;
     }
+
+    public Message(String errorCode, String uri, String message, String parameter, String type, String typeName) {
+        this.errorCode = errorCode;
+        this.uri = uri;
+        this.message = message;
+        this.parameter = parameter;
+        this.type = type;
+        this.typeName = typeName;
+    }
+    
+    
 
     public Message() {
 
