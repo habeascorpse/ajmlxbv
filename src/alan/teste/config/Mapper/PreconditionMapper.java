@@ -21,7 +21,11 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
     public Response toResponse(JMLEntryPreconditionError ex) {
 
         
-        return Response.status(400).entity(AjmlParserMessage.parser(ex.getMessage())).build();
+        try {
+            return Response.status(400).entity(AjmlParserMessage.parser(ex.getMessage())).build();
+        } catch (ClassNotFoundException ex1) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
 }

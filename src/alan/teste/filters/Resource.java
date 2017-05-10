@@ -14,10 +14,8 @@ import java.lang.annotation.Target;
  *
  * @author alan
  */
-@Target(value = {ElementType.PARAMETER,ElementType.TYPE_PARAMETER})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface Numeracao {
-    
-    public String value();
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface Resource {
     
 }

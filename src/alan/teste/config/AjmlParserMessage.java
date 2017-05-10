@@ -10,6 +10,8 @@ import alan.teste.entities.Message;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +20,9 @@ import java.util.logging.Logger;
  * @author alan
  */
 public class AjmlParserMessage {
-    
-    public static Message parser(String error) {
-        
-        
+
+    private static String extractParameter(String error) {
+
         String m = error;
         // Extraindo o nome do parâmetro
         int i = m.indexOf("when") + 8;
@@ -31,49 +32,74 @@ public class AjmlParserMessage {
 
         String parameter = m;
 
+        return parameter;
+
+    }
+
+    private static String extractMethod(String error) {
+
         // Extraindo o nome do método
-        m = error;
-        i = m.indexOf("by method") + 10;
+        String m = error;
+        int i = m.indexOf("by method") + 10;
         m = m.substring(i);
         i = m.indexOf(" ");
         String method = m.substring(0, i);
 
+        return method;
+    }
+
+    private static String extractClass(String method) {
+
         //Extraindo nome da Classe
-        i = method.lastIndexOf(".");
+        int i = method.lastIndexOf(".");
         String classe = method.substring(0, i);
 
-        // Setando nome da classe
-        method = method.substring(i + 1);
+        return classe;
+    }
 
-        StringBuilder filter = new StringBuilder();
+    private static List<String> extractAnnotations(String classe, String method, String parameter) throws ClassNotFoundException {
 
-        try {
-            Class cl = Class.forName(classe);
+        Class cl = Class.forName(classe);
 
-            for (Method me : cl.getMethods()) {
-                if (me.getName().equals(method)) {
-                    for (Parameter pm : me.getParameters()) {
-                        if (pm.getName().equals(parameter)) {
-                            for (Annotation a : pm.getDeclaredAnnotations()) {
-                                filter.append(a.annotationType().getName() + ";");
-                            }
+        List<String> annotations = new ArrayList();
+
+        for (Method me : cl.getMethods()) {
+            if (me.getName().equals(method)) {
+                for (Parameter pm : me.getParameters()) {
+                    if (pm.getName().equals(parameter)) {
+                        for (Annotation a : pm.getDeclaredAnnotations()) {
+
+                            annotations.add(a.annotationType().getName());
                         }
                     }
                 }
             }
-            
-            
-            Message msg = new Message("403","", "Bad request", parameter, "filter",filter.toString());
-            
-            return msg;
-
-        } catch (ClassNotFoundException ex1) {
-            Logger.getLogger(PreconditionMapper.class.getName()).log(Level.SEVERE, null, ex1);
-        } catch (SecurityException ex1) {
-            Logger.getLogger(PreconditionMapper.class.getName()).log(Level.SEVERE, null, ex1);
         }
+
+        return annotations;
+    }
+
+    public static Message parser(String error) throws ClassNotFoundException {
+
+        String parameter = extractParameter(error);
+        String method = extractMethod(error);
+        String classe = extractClass(method);
+
+        int i = method.lastIndexOf(".");
+        method = method.substring(i + 1);
         
-        return null;
+        List<String> annotations = extractAnnotations(classe, method, parameter);
+        String tipo = "";
+        if (annotations.stream().anyMatch(s -> s.endsWith("Filtro")))
+            tipo = "filter";
         
+        if (annotations.stream().anyMatch(s -> s.endsWith("Resource")))
+            tipo = "resource";
+        
+
+        Message msg = new Message("403", "", "Bad request: "+error, parameter, tipo);
+
+        return msg;
+
     }
 }

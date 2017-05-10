@@ -1,6 +1,5 @@
 package alan.teste.entities;
 
-import alan.teste.filters.Numeracao;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -70,13 +69,12 @@ public class Message implements Serializable {
         this.parameter = parameter;
     }
 
-    public Message(String errorCode, String uri, String message, String parameter, String type, String typeName) {
+    public Message(String errorCode, String uri, String message, String parameter, String type) {
         this.errorCode = errorCode;
         this.uri = uri;
         this.message = message;
         this.parameter = parameter;
         this.type = type;
-        this.typeName = typeName;
     }
     
     

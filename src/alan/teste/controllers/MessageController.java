@@ -11,7 +11,7 @@ import alan.teste.entities.MocGroup;
 import alan.teste.entities.MocMessage;
 import alan.teste.entities.MocUser;
 import alan.teste.entities.UserGroup;
-import alan.teste.filters.Numeracao;
+import alan.teste.filters.Filtro;
 import alan.teste.services.GroupService;
 import alan.teste.services.MessageService;
 import alan.teste.services.UserGroupService;
@@ -64,7 +64,7 @@ public class MessageController {
     //@ requires max > 0;
     //@ requires groupName.length() > 0;
     //@ ensures \result.size() <= max;
-    public List<MocMessage> getMessageByGroup(@QueryParam("group") String groupName, @Numeracao(value = "numero") @QueryParam("maxResult")  int max) throws NoContentException {
+    public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String groupName, @Filtro @QueryParam("maxResult")  int max) throws NoContentException {
 
         
         MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
