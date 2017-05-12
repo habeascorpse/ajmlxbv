@@ -37,11 +37,17 @@ public class UserService extends GenericService<MocUser> {
     private ConfirmationModel confirmationModel;
 
     public MocUser getByLogin(String login) {
+        
+        try {
 
         return (MocUser) getEntityManager()
                 .createNamedQuery("User.getByLogin")
                 .setParameter("login", login)
                 .getSingleResult();
+        }
+        catch (Exception ex) {
+            return null;
+        }
 
     }
 
@@ -118,6 +124,7 @@ public class UserService extends GenericService<MocUser> {
     }
 
     public boolean confirmUser(String hash) {
+        
         ConfirmationUser confirm = confirmationModel.getByHash(hash);
         if (confirm != null) {
             confirm.getMocUser().setStatus(1);
@@ -131,6 +138,7 @@ public class UserService extends GenericService<MocUser> {
     }
 
     private Boolean hasContact(MocUser user, MocUser contact) {
+        
         if (user.getId().equals(contact.getId())) {
             return Boolean.TRUE;
         }

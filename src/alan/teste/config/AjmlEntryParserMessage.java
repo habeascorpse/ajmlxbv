@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author alan
  */
-public class AjmlParserMessage {
+public class AjmlEntryParserMessage {
 
     private static String extractParameter(String error) {
 

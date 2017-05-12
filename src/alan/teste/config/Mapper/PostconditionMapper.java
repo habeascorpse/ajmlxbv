@@ -9,7 +9,8 @@ public class PostconditionMapper implements ExceptionMapper<JMLPostconditionErro
 
 	@Override
 	public Response toResponse(JMLPostconditionError ex) {
-		Message message = new Message("500", "location", ex.getMessage());
+            
+		Message message = new Message("500", "Internal Error on PostCondition", ex.getMessage());
 
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
 	}

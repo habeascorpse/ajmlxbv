@@ -30,8 +30,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
-import org.jmlspecs.lang.annotation.Ensures;
-import org.jmlspecs.lang.annotation.Requires;
 import org.jmlspecs.lang.annotation.SpecPublic;
 
 /**
@@ -59,20 +57,20 @@ public class MessageController {
     private List<MocMessage> lista;
 
     @GET
-    // @Secured
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    //@ requires max > 0;
-    //@ requires groupName.length() > 0;
-    //@ ensures \result.size() <= max;
-    public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String groupName, @Filtro @QueryParam("maxResult")  int max) throws NoContentException {
+    //@ requires maxResult > 0;
+    //@ requires group.length() > 0;
+    //@ ensures \result.size() <= maxResult;
+    public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String group, @Filtro @QueryParam("maxResult")  int maxResult) throws NoContentException {
 
         
-        MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
+        MocGroup groupObj = groupService.getGroupByName(authenticatedUser, group);
         
-        if (group != null) {
+        if (groupObj != null) {
 
-            UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, group);
-            lista = messageService.getMessageByGroup(userGroup, max);
+            UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, groupObj);
+            lista = messageService.getMessageByGroup(userGroup, maxResult);
             
             return lista;
         } else {

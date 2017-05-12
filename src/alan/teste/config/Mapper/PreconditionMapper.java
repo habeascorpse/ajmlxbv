@@ -1,6 +1,6 @@
 package alan.teste.config.Mapper;
 
-import alan.teste.config.AjmlParserMessage;
+import alan.teste.config.AjmlEntryParserMessage;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -22,7 +22,7 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
 
         
         try {
-            return Response.status(400).entity(AjmlParserMessage.parser(ex.getMessage())).build();
+            return Response.status(400).entity(AjmlEntryParserMessage.parser(ex.getMessage())).build();
         } catch (ClassNotFoundException ex1) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
