@@ -11,7 +11,7 @@ public class SignalsOnlyMapper implements ExceptionMapper<JMLExceptionalPostcond
 
 	@Override
 	public Response toResponse(JMLExceptionalPostconditionError ex) {
-		Message message = new Message("500", "location", ex.getMessage());
+		Message message = new Message(500, "location", ex.getMessage());
 
 		return Response.status(500).entity(message).build();
 	}

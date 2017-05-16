@@ -19,7 +19,7 @@ public class SingnalOnly implements ExceptionMapper<JMLExitExceptionalPostcondit
     @Override
     
 	public Response toResponse(JMLExitExceptionalPostconditionError ex) {
-		Message message = new Message("500","location",ex.getMessage());
+		Message message = new Message(500,"location",ex.getMessage());
 		
 		return Response.status(400).entity(message).build();
 	}

@@ -96,8 +96,9 @@ public class AjmlEntryParserMessage {
         if (annotations.stream().anyMatch(s -> s.endsWith("Resource")))
             tipo = "resource";
         
-
-        Message msg = new Message("403", "", "Bad request: "+error, parameter, tipo);
+        int errorCode = tipo.equals("filter") ? 403 : 404;
+        
+        Message msg = new Message(errorCode, "", "Bad request: "+error, parameter, tipo);
 
         return msg;
 

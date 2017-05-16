@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 public class Message implements Serializable {
 
-    private String errorCode;
+    private Integer errorCode;
 
     private String uri;
 
@@ -23,13 +23,14 @@ public class Message implements Serializable {
     
     private String typeName;
 
-    public String getErrorCode() {
+    public Integer getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
+    public void setErrorCode(Integer errorCode) {
         this.errorCode = errorCode;
     }
+    
 
     public String getUri() {
         return uri;
@@ -55,13 +56,13 @@ public class Message implements Serializable {
         this.parameter = parameter;
     }
 
-    public Message(String errorCode, String uri, String message) {
+    public Message(Integer errorCode, String uri, String message) {
         super();
         this.errorCode = errorCode;
         this.uri = uri;
         this.message = message;
     }
-    public Message(String errorCode, String uri, String message, String parameter) {
+    public Message(Integer errorCode, String uri, String message, String parameter) {
         super();
         this.errorCode = errorCode;
         this.uri = uri;
@@ -69,7 +70,7 @@ public class Message implements Serializable {
         this.parameter = parameter;
     }
 
-    public Message(String errorCode, String uri, String message, String parameter, String type) {
+    public Message(Integer errorCode, String uri, String message, String parameter, String type) {
         this.errorCode = errorCode;
         this.uri = uri;
         this.message = message;

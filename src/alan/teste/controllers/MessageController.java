@@ -12,6 +12,7 @@ import alan.teste.entities.MocMessage;
 import alan.teste.entities.MocUser;
 import alan.teste.entities.UserGroup;
 import alan.teste.filters.Filtro;
+import alan.teste.filters.Resource;
 import alan.teste.services.GroupService;
 import alan.teste.services.MessageService;
 import alan.teste.services.UserGroupService;
@@ -94,6 +95,19 @@ public class MessageController {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
 
+    }
+    
+    @GET
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    //@ requires id > 0;
+    public MocMessage getMessage(@PathParam("id") @Resource int id) throws NoContentException {
+
+            MocMessage message = messageService.getByID((long) id);
+            
+            return message;
+        
     }
 
 }

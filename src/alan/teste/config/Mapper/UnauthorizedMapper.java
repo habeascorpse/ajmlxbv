@@ -19,7 +19,7 @@ public class UnauthorizedMapper implements ExceptionMapper<NotAuthorizedExceptio
 	
 	@Override
 	public Response toResponse(NotAuthorizedException ex) {
-		Message message = new Message("400","location",ex.getMessage());
+		Message message = new Message(401,"location",ex.getMessage());
 		
 		return Response.status(Response.Status.UNAUTHORIZED).entity(message).build();
 	}
