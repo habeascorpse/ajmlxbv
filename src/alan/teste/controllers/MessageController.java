@@ -12,6 +12,7 @@ import alan.teste.entities.MocMessage;
 import alan.teste.entities.MocUser;
 import alan.teste.entities.UserGroup;
 import alan.teste.filters.Filtro;
+import alan.teste.filters.HttpBody;
 import alan.teste.filters.Resource;
 import alan.teste.services.GroupService;
 import alan.teste.services.MessageService;
@@ -85,7 +86,9 @@ public class MessageController {
     @Consumes(MediaType.APPLICATION_JSON)
     //@ requires message.getText().length() > 0;
     //@ requires message.getText().length() < 1000;
-    public Response sendMessage(MocMessage message, @QueryParam("group") String groupName) {
+    //@ requires groupName != null;
+    //@ requires groupName.length() > 0 && groupName.length() < 255;
+    public Response sendMessage(@HttpBody MocMessage message,@Filtro @QueryParam("group") String groupName) {
         MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
         if (group != null) {
             message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, group));
@@ -102,9 +105,9 @@ public class MessageController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     //@ requires id > 0;
-    public MocMessage getMessage(@PathParam("id") @Resource int id) throws NoContentException {
+    public MocMessage getMessage(@Resource  @PathParam("id") long id) throws NoContentException {
 
-            MocMessage message = messageService.getByID((long) id);
+            MocMessage message = messageService.getByID( id);
             
             return message;
         

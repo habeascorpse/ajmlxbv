@@ -5,15 +5,13 @@
  */
 package alan.teste.config;
 
-import alan.teste.config.Mapper.PreconditionMapper;
 import alan.teste.entities.Message;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -96,7 +94,7 @@ public class AjmlEntryParserMessage {
         if (annotations.stream().anyMatch(s -> s.endsWith("Resource")))
             tipo = "resource";
         
-        int errorCode = tipo.equals("filter") ? 403 : 404;
+        int errorCode = tipo.equals("filter") ? Response.Status.PRECONDITION_FAILED.getStatusCode() : Response.Status.NOT_FOUND.getStatusCode();
         
         Message msg = new Message(errorCode, "", "Bad request: "+error, parameter, tipo);
 
