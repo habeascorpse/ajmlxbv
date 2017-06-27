@@ -21,8 +21,6 @@ import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -61,9 +59,12 @@ public class MessageController {
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    //@ requires maxResult > 0;
+    //@ requires group.length() <= 4;
     //@ requires group.length() > 0;
-    //@ ensures \result.size() <= maxResult;
+    //@ also
+    //@ requires maxResult > 0;
+    //@ requires maxResult <= 100;
+    // @ ensures \result.size() <= maxResult;
     public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String group, @Filtro @QueryParam("maxResult")  int maxResult) throws NoContentException {
 
         
@@ -76,7 +77,7 @@ public class MessageController {
             
             return lista;
         } else {
-            throw new NoContentException("");
+            return null;
         }
 
     }

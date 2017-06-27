@@ -8,14 +8,13 @@ import javax.ws.rs.ext.Provider;
 import org.jmlspecs.ajmlrac.runtime.JMLEntryPreconditionError;
 
 import alan.teste.entities.Message;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 
 @Provider
 public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionError> {
+    
+    @Context private HttpServletRequest request;
 
     @Override
     public Response toResponse(JMLEntryPreconditionError ex) {
@@ -23,6 +22,7 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
         
         try {
             Message msg = AjmlEntryParserMessage.parser(ex.getMessage());
+            msg.setUri(request.getRequestURL().toString()+"?"+request.getQueryString());
             return Response.status(msg.getErrorCode()).entity(msg).build();
         } catch (ClassNotFoundException ex1) {
             return Response.status(Response.Status.BAD_REQUEST).build();

@@ -52,6 +52,7 @@ public class GroupController implements Serializable {
 
     @Path("/{id}")
     @GET
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     //@ requires id.intValue() > 0;
     public Response getById(@PathParam("id") Long id) {

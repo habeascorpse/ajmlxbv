@@ -33,6 +33,19 @@ public class AjmlEntryParserMessage {
         return parameter;
 
     }
+    
+    private static String extractCondition(String error) {
+
+        String m = error;
+        // Extraindo o nome do parâmetro
+        int i = m.indexOf("when") + 4;
+        m = m.substring(i);
+
+        String condition = m;
+
+        return condition;
+
+    }
 
     private static String extractMethod(String error) {
 
@@ -80,6 +93,7 @@ public class AjmlEntryParserMessage {
     public static Message parser(String error) throws ClassNotFoundException {
 
         String parameter = extractParameter(error);
+        String condition = extractCondition(error);
         String method = extractMethod(error);
         String classe = extractClass(method);
 
@@ -96,7 +110,7 @@ public class AjmlEntryParserMessage {
         
         int errorCode = tipo.equals("filter") ? Response.Status.PRECONDITION_FAILED.getStatusCode() : Response.Status.NOT_FOUND.getStatusCode();
         
-        Message msg = new Message(errorCode, "", "Bad request: "+error, parameter, tipo);
+        Message msg = new Message(errorCode, "", "Pre-Condition failed: "+ error, parameter, tipo);
 
         return msg;
 

@@ -24,6 +24,8 @@ public class ConfirmationModel extends GenericService<ConfirmationUser> {
         super(ConfirmationUser.class);
     }
     
+    
+    //@ requires hash.length() > 5;
     public ConfirmationUser getByHash(String hash) {
         
         try {
