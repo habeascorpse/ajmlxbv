@@ -97,11 +97,7 @@ MocApp.controller('MessageController', function ($scope, $http, $location, State
         
         var req = {
             method: 'POST',
-            url: State.formData['url'] + 'contact',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            data : contact.login
+            url: State.formData['url'] + 'contact?name='+contact.login
         };
 
         $http(req).

@@ -41,13 +41,12 @@ public class ContactController {
     @POST
     @Secured
     //@ requires contact.length() > 4;
-    public Response addContact(@QueryParam("contact") String contact) {
+    public Response addContact(@QueryParam("name") String contact) {
         
         MocUser usuario = userService.getByID(authenticatedUser.getId());
 
         MocUser userContact = userService.getByLogin(contact);
-        System.out.println("usuário: "+authenticatedUser);
-        System.out.println("contato: "+userContact);
+        
         userService.addContact(usuario, userContact);
 
         return Response.ok().build();
@@ -60,8 +59,10 @@ public class ContactController {
     @Consumes(MediaType.TEXT_PLAIN)
     //@ requires contact.length() > 4;
     public Response confirmContact(String contact) {
+        
 
         MocUser userContact = userService.getByLogin(contact);
+        
         userService.confirmContact(authenticatedUser, userContact);
 
         return Response.ok().build();
