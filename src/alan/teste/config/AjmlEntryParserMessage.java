@@ -6,6 +6,7 @@
 package alan.teste.config;
 
 import alan.teste.entities.Message;
+import alan.teste.filters.UrlDoc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -33,7 +34,7 @@ public class AjmlEntryParserMessage {
         return parameter;
 
     }
-    
+
     private static String extractCondition(String error) {
 
         String m = error;
@@ -90,7 +91,23 @@ public class AjmlEntryParserMessage {
         return annotations;
     }
 
-    public static Message parser(String error) throws ClassNotFoundException {
+    private static String extractUrlDoc(String classe, String method) throws ClassNotFoundException, NoSuchFieldException {
+
+        Class cl = Class.forName(classe);
+
+        for (Method me : cl.getMethods()) {
+            if (me.getName().equals(method)) {
+                UrlDoc url = me.getAnnotation(UrlDoc.class);
+                return url != null ? url.value(): null;
+
+            }
+        }
+
+        return null;
+
+    }
+
+    public static Message parser(String error) throws ClassNotFoundException, NoSuchFieldException {
 
         String parameter = extractParameter(error);
         String condition = extractCondition(error);
@@ -99,18 +116,31 @@ public class AjmlEntryParserMessage {
 
         int i = method.lastIndexOf(".");
         method = method.substring(i + 1);
-        
+
         List<String> annotations = extractAnnotations(classe, method, parameter);
         String tipo = "";
-        if (annotations.stream().anyMatch(s -> s.endsWith("Filtro")))
+
+        String urlDoc = extractUrlDoc(classe, method);
+
+        int errorCode = 0;
+
+        if (annotations.stream().anyMatch(s -> s.endsWith("Filtro"))) {
             tipo = "filter";
-        
-        if (annotations.stream().anyMatch(s -> s.endsWith("Resource")))
+            errorCode = Response.Status.BAD_REQUEST.getStatusCode();
+        }
+
+        if (annotations.stream().anyMatch(s -> s.endsWith("Resource"))) {
             tipo = "resource";
-        
-        int errorCode = tipo.equals("filter") ? Response.Status.PRECONDITION_FAILED.getStatusCode() : Response.Status.NOT_FOUND.getStatusCode();
-        
-        Message msg = new Message(errorCode, "", "Pre-Condition failed: "+ error, parameter, tipo);
+            errorCode = Response.Status.NOT_FOUND.getStatusCode();
+        }
+
+        if (annotations.stream().anyMatch(s -> s.endsWith("HttpBody"))) {
+            tipo = "Object Body";
+            errorCode = Response.Status.PRECONDITION_FAILED.getStatusCode();
+        }
+
+        Message msg = new Message(errorCode, "", "Pre-Condition failed: " + condition, parameter, tipo);
+        msg.setUrlDoc(urlDoc);
 
         return msg;
 

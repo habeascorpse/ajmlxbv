@@ -14,6 +14,7 @@ import alan.teste.entities.UserGroup;
 import alan.teste.filters.Filtro;
 import alan.teste.filters.HttpBody;
 import alan.teste.filters.Resource;
+import alan.teste.filters.UrlDoc;
 import alan.teste.services.GroupService;
 import alan.teste.services.MessageService;
 import alan.teste.services.UserGroupService;
@@ -58,10 +59,10 @@ public class MessageController {
 
     @GET
     @Secured
+    @UrlDoc("https://example.com/doc/item/3")
     @Produces(MediaType.APPLICATION_JSON)
     //@ requires group.length() <= 4;
     //@ requires group.length() > 0;
-    //@ also
     //@ requires maxResult > 0;
     //@ requires maxResult <= 100;
     // @ ensures \result.size() <= maxResult;
@@ -85,14 +86,14 @@ public class MessageController {
     @POST
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
-    //@ requires message.getText().length() > 0;
+    //@ requires message.getText().length() > 4;
     //@ requires message.getText().length() < 1000;
-    //@ requires groupName != null;
-    //@ requires groupName.length() > 0 && groupName.length() < 255;
-    public Response sendMessage(@HttpBody MocMessage message,@Filtro @QueryParam("group") String groupName) {
-        MocGroup group = groupService.getGroupByName(authenticatedUser, groupName);
-        if (group != null) {
-            message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, group));
+    //@ requires group != null;
+    //@ requires group.length() > 0 && group.length() < 255;
+    public Response sendMessage(@HttpBody MocMessage message,@Filtro @QueryParam("group") String group) {
+        MocGroup groupObj = groupService.getGroupByName(authenticatedUser, group);
+        if (groupObj != null) {
+            message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, groupObj));
             messageService.sendMessage(message);
             return Response.ok().build();
         } else {

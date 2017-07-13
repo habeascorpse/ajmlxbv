@@ -22,6 +22,8 @@ public class Message implements Serializable {
     private String type;
     
     private String typeName;
+    
+    private String urlDoc;
 
     public Integer getErrorCode() {
         return errorCode;
@@ -51,6 +53,15 @@ public class Message implements Serializable {
     public String getParameter() {
         return parameter;
     }
+
+    public String getUrlDoc() {
+        return urlDoc;
+    }
+
+    public void setUrlDoc(String urlDoc) {
+        this.urlDoc = urlDoc;
+    }
+    
 
     public void setParameter(String parameter) {
         this.parameter = parameter;

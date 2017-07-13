@@ -8,6 +8,9 @@ import javax.ws.rs.ext.Provider;
 import org.jmlspecs.ajmlrac.runtime.JMLEntryPreconditionError;
 
 import alan.teste.entities.Message;
+import com.auth0.jwt.internal.org.apache.commons.lang3.exception.ExceptionUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
@@ -25,6 +28,9 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
             msg.setUri(request.getRequestURL().toString()+"?"+request.getQueryString());
             return Response.status(msg.getErrorCode()).entity(msg).build();
         } catch (ClassNotFoundException ex1) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (NoSuchFieldException ex1) {
+            System.out.println(ExceptionUtils.getRootCauseMessage(ex));
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
