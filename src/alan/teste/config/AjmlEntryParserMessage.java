@@ -91,7 +91,7 @@ public class AjmlEntryParserMessage {
         return annotations;
     }
 
-    private static String extractUrlDoc(String classe, String method) throws ClassNotFoundException, NoSuchFieldException {
+    private static String extractUrlDoc(String classe, String method) throws ClassNotFoundException {
 
         Class cl = Class.forName(classe);
 
@@ -107,7 +107,7 @@ public class AjmlEntryParserMessage {
 
     }
 
-    public static Message parser(String error) throws ClassNotFoundException, NoSuchFieldException {
+    public static Message parser(String error) throws ClassNotFoundException {
 
         String parameter = extractParameter(error);
         String condition = extractCondition(error);
@@ -123,23 +123,30 @@ public class AjmlEntryParserMessage {
         String urlDoc = extractUrlDoc(classe, method);
 
         int errorCode = 0;
+        StringBuilder msgError = new StringBuilder();
 
         if (annotations.stream().anyMatch(s -> s.endsWith("Filtro"))) {
             tipo = "filter";
             errorCode = Response.Status.BAD_REQUEST.getStatusCode();
+            msgError.append("Bad Request:");
         }
 
         if (annotations.stream().anyMatch(s -> s.endsWith("Resource"))) {
             tipo = "resource";
             errorCode = Response.Status.NOT_FOUND.getStatusCode();
+            msgError.append("Not Found:");
         }
 
         if (annotations.stream().anyMatch(s -> s.endsWith("HttpBody"))) {
             tipo = "Object Body";
             errorCode = Response.Status.PRECONDITION_FAILED.getStatusCode();
+            msgError.append("Pre-Condition Failed:");
         }
+        
+        msgError.append(" ");
+        msgError.append(condition);
 
-        Message msg = new Message(errorCode, "", "Pre-Condition failed: " + condition, parameter, tipo);
+        Message msg = new Message(errorCode, "", msgError.toString(), parameter, tipo);
         msg.setUrlDoc(urlDoc);
 
         return msg;

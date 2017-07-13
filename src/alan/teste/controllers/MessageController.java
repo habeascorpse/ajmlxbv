@@ -61,11 +61,11 @@ public class MessageController {
     @Secured
     @UrlDoc("https://example.com/doc/item/3")
     @Produces(MediaType.APPLICATION_JSON)
-    //@ requires group.length() <= 4;
+    //@ requires group.length() <= 50;
     //@ requires group.length() > 0;
     //@ requires maxResult > 0;
     //@ requires maxResult <= 100;
-    // @ ensures \result.size() <= maxResult;
+    //@ ensures \result.size() <= maxResult;
     public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String group, @Filtro @QueryParam("maxResult")  int maxResult) throws NoContentException {
 
         
@@ -74,7 +74,7 @@ public class MessageController {
         if (groupObj != null) {
 
             UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, groupObj);
-            lista = messageService.getMessageByGroup(userGroup, maxResult);
+            lista = messageService.getMessageByGroup(userGroup, 5);
             
             return lista;
         } else {

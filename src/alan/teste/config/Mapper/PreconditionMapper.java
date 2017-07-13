@@ -29,10 +29,7 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
             return Response.status(msg.getErrorCode()).entity(msg).build();
         } catch (ClassNotFoundException ex1) {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        } catch (NoSuchFieldException ex1) {
-            System.out.println(ExceptionUtils.getRootCauseMessage(ex));
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        } 
     }
 
 }
