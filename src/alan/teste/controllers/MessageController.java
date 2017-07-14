@@ -14,7 +14,6 @@ import alan.teste.entities.UserGroup;
 import alan.teste.filters.Filtro;
 import alan.teste.filters.HttpBody;
 import alan.teste.filters.Resource;
-import alan.teste.filters.UrlDoc;
 import alan.teste.services.GroupService;
 import alan.teste.services.MessageService;
 import alan.teste.services.UserGroupService;
@@ -32,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
 import org.jmlspecs.lang.annotation.SpecPublic;
+import alan.teste.filters.DocNumber;
 
 /**
  *
@@ -59,7 +59,7 @@ public class MessageController {
 
     @GET
     @Secured
-    @UrlDoc("https://example.com/doc/item/3")
+    @DocNumber("https://example.com/doc/item/3")
     @Produces(MediaType.APPLICATION_JSON)
     //@ requires group.length() <= 50;
     //@ requires group.length() > 0;
@@ -74,7 +74,7 @@ public class MessageController {
         if (groupObj != null) {
 
             UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, groupObj);
-            lista = messageService.getMessageByGroup(userGroup, 5);
+            lista = messageService.getMessageByGroup(userGroup, maxResult);
             
             return lista;
         } else {

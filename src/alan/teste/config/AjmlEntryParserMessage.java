@@ -6,13 +6,13 @@
 package alan.teste.config;
 
 import alan.teste.entities.Message;
-import alan.teste.filters.UrlDoc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import alan.teste.filters.DocNumber;
 
 /**
  *
@@ -97,7 +97,7 @@ public class AjmlEntryParserMessage {
 
         for (Method me : cl.getMethods()) {
             if (me.getName().equals(method)) {
-                UrlDoc url = me.getAnnotation(UrlDoc.class);
+                DocNumber url = me.getAnnotation(DocNumber.class);
                 return url != null ? url.value(): null;
 
             }
@@ -147,7 +147,8 @@ public class AjmlEntryParserMessage {
         msgError.append(condition);
 
         Message msg = new Message(errorCode, "", msgError.toString(), parameter, tipo);
-        msg.setUrlDoc(urlDoc);
+        msg.setDocNumber(urlDoc);
+        msg.setType(tipo);
 
         return msg;
 
