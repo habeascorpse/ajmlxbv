@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
 import alan.teste.filters.DocNumber;
+import alan.teste.filters.ValidationMessage;
 
 /**
  *
@@ -69,21 +70,15 @@ public class AjmlEntryParserMessage {
         return classe;
     }
 
-    private static List<String> extractAnnotations(String classe, String method, String parameter) throws ClassNotFoundException {
-
-        Class cl = Class.forName(classe);
+    private static List<String> extractAnnotations(Method method, String parameter) throws ClassNotFoundException {
 
         List<String> annotations = new ArrayList();
 
-        for (Method me : cl.getMethods()) {
-            if (me.getName().equals(method)) {
-                for (Parameter pm : me.getParameters()) {
-                    if (pm.getName().equals(parameter)) {
-                        for (Annotation a : pm.getDeclaredAnnotations()) {
+        for (Parameter pm : method.getParameters()) {
+            if (pm.getName().equals(parameter)) {
+                for (Annotation a : pm.getDeclaredAnnotations()) {
 
-                            annotations.add(a.annotationType().getName());
-                        }
-                    }
+                    annotations.add(a.annotationType().getName());
                 }
             }
         }
@@ -91,23 +86,29 @@ public class AjmlEntryParserMessage {
         return annotations;
     }
 
-    private static String extractUrlDoc(String classe, String method) throws ClassNotFoundException {
+    private static String extractUrlDoc( Method method) throws ClassNotFoundException {
 
-        Class cl = Class.forName(classe);
+        DocNumber url = method.getAnnotation(DocNumber.class);
+        return url != null ? url.value() : null;
 
-        for (Method me : cl.getMethods()) {
-            if (me.getName().equals(method)) {
-                DocNumber url = me.getAnnotation(DocNumber.class);
-                return url != null ? url.value(): null;
+    }
 
+    private static String getValidationMessage( Method method, String parameter) {
+
+        
+        for (Parameter pm : method.getParameters()) {
+            if (pm.getName().equals(parameter)) {
+                ValidationMessage vm = pm.getAnnotation(ValidationMessage.class);
+                return vm != null ? vm.value() : null;
             }
         }
-
+        
         return null;
 
     }
 
     public static Message parser(String error) throws ClassNotFoundException {
+        
 
         String parameter = extractParameter(error);
         String condition = extractCondition(error);
@@ -117,10 +118,20 @@ public class AjmlEntryParserMessage {
         int i = method.lastIndexOf(".");
         method = method.substring(i + 1);
 
-        List<String> annotations = extractAnnotations(classe, method, parameter);
+        Class clazz = Class.forName(classe);
+        Method _method = null;
+
+        for (Method me : clazz.getMethods()) {
+            if (me.getName().equals(method)) {
+                _method = me;
+
+            }
+        }
+
+        List<String> annotations = extractAnnotations(_method, parameter);
         String tipo = "";
 
-        String urlDoc = extractUrlDoc(classe, method);
+        String urlDoc = extractUrlDoc( _method);
 
         int errorCode = 0;
         StringBuilder msgError = new StringBuilder();
@@ -142,11 +153,13 @@ public class AjmlEntryParserMessage {
             errorCode = Response.Status.PRECONDITION_FAILED.getStatusCode();
             msgError.append("Pre-Condition Failed:");
         }
-        
+
         msgError.append(" ");
         msgError.append(condition);
+        
+        String validationMessage = getValidationMessage(_method, parameter);
 
-        Message msg = new Message(errorCode, "", msgError.toString(), parameter, tipo);
+        Message msg = new Message(errorCode, "", validationMessage, parameter, tipo);
         msg.setDocNumber(urlDoc);
         msg.setType(tipo);
 

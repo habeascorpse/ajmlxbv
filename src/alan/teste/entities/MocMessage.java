@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -39,7 +40,7 @@ public class MocMessage implements Serializable {
     private Long id;
     
     @Column(length = 1000)
-    private String text;
+    private String text = " ";
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -47,6 +48,10 @@ public class MocMessage implements Serializable {
     
     @ManyToOne
     private UserGroup userGroup;
+    
+    @XmlTransient
+    @Transient
+    public int length;
 
     public MocMessage() {
         
@@ -55,6 +60,7 @@ public class MocMessage implements Serializable {
 
     public MocMessage(String text, UserGroup userGroup) {
         this.text = text;
+        this.length = text.length();
         this.userGroup = userGroup;
         sendDate = new Date(System.currentTimeMillis());
     }
@@ -66,6 +72,12 @@ public class MocMessage implements Serializable {
     public /*@ pure @*/ String getText() {
         return text;
     }
+
+    @Transient
+    public int getLength() {
+        return length;
+    }
+    
 
     public void setText(String text) {
         this.text = text;

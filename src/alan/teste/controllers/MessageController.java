@@ -32,6 +32,7 @@ import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
 import org.jmlspecs.lang.annotation.SpecPublic;
 import alan.teste.filters.DocNumber;
+import alan.teste.filters.ValidationMessage;
 
 /**
  *
@@ -41,6 +42,10 @@ import alan.teste.filters.DocNumber;
 @RequestScoped
 public class MessageController {
 
+    
+    
+    
+    
     @Inject
     private MessageService messageService;
 
@@ -57,16 +62,30 @@ public class MessageController {
     @SpecPublic
     private List<MocMessage> lista;
 
+    
+    
+    
+    
+    
     @GET
     @Secured
-    @DocNumber("https://example.com/doc/item/3")
+    @DocNumber(value = "https://example.com/doc/item/3")
     @Produces(MediaType.APPLICATION_JSON)
     //@ requires group.length() <= 50;
     //@ requires group.length() > 0;
     //@ requires maxResult > 0;
     //@ requires maxResult <= 100;
     //@ ensures \result.size() <= maxResult;
-    public List<MocMessage> getMessageByGroup(@Filtro @QueryParam("group") String group, @Filtro @QueryParam("maxResult")  int maxResult) throws NoContentException {
+    public List<MocMessage> getMessageByGroup(
+                                                @Filtro
+                                                @ValidationMessage("The group length must be minor than 50")
+                                                @QueryParam("group")
+                                                    String group,
+            
+                                                @Filtro
+                                                @ValidationMessage("The value must be between 0 and 100")
+                                                @QueryParam("maxResult")
+                                                    int maxResult) throws NoContentException {
 
         
         MocGroup groupObj = groupService.getGroupByName(authenticatedUser, group);
@@ -74,7 +93,7 @@ public class MessageController {
         if (groupObj != null) {
 
             UserGroup userGroup = userGroupService.getByUserAndGroup(authenticatedUser, groupObj);
-            lista = messageService.getMessageByGroup(userGroup, maxResult);
+            lista = messageService.getMessageByGroup(userGroup, 5);
             
             return lista;
         } else {
@@ -83,16 +102,33 @@ public class MessageController {
 
     }
 
+    
+    
+    
+    
+    
     @POST
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
-    //@ requires message.getText().length() > 4;
-    //@ requires message.getText().length() < 1000;
+    @DocNumber(value = "https://example.com/doc/item/4")
+    //@ requires message.length > 4;
+    //@ requires message.length < 1000;
     //@ requires group != null;
     //@ requires group.length() > 0 && group.length() < 255;
-    public Response sendMessage(@HttpBody MocMessage message,@Filtro @QueryParam("group") String group) {
+    public Response sendMessage(
+                                @HttpBody
+                                        MocMessage message
+                                ,
+                                @Filtro
+                                @QueryParam("group")
+                                        String group
+                                ) {
+        
+        
         MocGroup groupObj = groupService.getGroupByName(authenticatedUser, group);
         if (groupObj != null) {
+            
+            
             message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, groupObj));
             messageService.sendMessage(message);
             return Response.ok().build();
@@ -101,6 +137,12 @@ public class MessageController {
         }
 
     }
+    
+    
+    
+    
+    
+    
     
     @GET
     @Secured
@@ -114,5 +156,14 @@ public class MessageController {
             return message;
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

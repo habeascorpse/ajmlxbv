@@ -16,7 +16,7 @@ public class AjmlPostConditionParser {
     
     public static Message parser(String error) {
         
-        Message msg = new Message(500, "", error, "", "");
+        Message msg = new Message(500, null, error, null, null);
         
         return msg;
     }

@@ -24,10 +24,15 @@ public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionE
 
         
         try {
+            
+            ex.printStackTrace();
             Message msg = AjmlEntryParserMessage.parser(ex.getMessage());
             msg.setUri(request.getRequestURL().toString()+"?"+request.getQueryString());
+            
             return Response.status(msg.getErrorCode()).entity(msg).build();
+            
         } catch (ClassNotFoundException ex1) {
+            
             return Response.status(Response.Status.BAD_REQUEST).build();
         } 
     }
