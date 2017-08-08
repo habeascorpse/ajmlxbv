@@ -6,7 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import alan.teste.entities.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
-import org.jmlspecs.ajmlrac.runtime.JMLPostconditionError;
+import org.aspectjml.ajmlrac.runtime.JMLPostconditionError;
 
 public class PostconditionMapper implements ExceptionMapper<JMLPostconditionError> {
     

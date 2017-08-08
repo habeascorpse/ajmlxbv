@@ -20,8 +20,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.jmlspecs.lang.annotation.Pure;
-import org.jmlspecs.lang.annotation.SpecPublic;
+import org.aspectjml.lang.annotation.Pure;
+import org.aspectjml.lang.annotation.SpecPublic;
 
 /**
  *

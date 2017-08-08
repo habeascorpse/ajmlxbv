@@ -30,9 +30,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
-import org.jmlspecs.lang.annotation.SpecPublic;
+import org.aspectjml.lang.annotation.SpecPublic;
 import alan.teste.filters.DocNumber;
 import alan.teste.filters.ValidationMessage;
+import javax.ws.rs.DefaultValue;
+import org.aspectjml.lang.annotation.Requires;
 
 /**
  *
@@ -71,11 +73,11 @@ public class MessageController {
     @Secured
     @DocNumber(value = "https://example.com/doc/item/3")
     @Produces(MediaType.APPLICATION_JSON)
-    //@ requires group.length() <= 50;
-    //@ requires group.length() > 0;
+    // @ requires group.length() <= 50;
+    // @ requires group.length() > 20;
     //@ requires maxResult > 0;
     //@ requires maxResult <= 100;
-    //@ ensures \result.size() <= maxResult;
+    // @ ensures \result.size() <= maxResult;
     public List<MocMessage> getMessageByGroup(
                                                 @Filtro
                                                 @ValidationMessage("The group length must be minor than 50")
@@ -111,10 +113,9 @@ public class MessageController {
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @DocNumber(value = "https://example.com/doc/item/4")
-    //@ requires message.length > 4;
-    //@ requires message.length < 1000;
+    //@ requires message.getLength() > 10;
     //@ requires group != null;
-    //@ requires group.length() > 0 && group.length() < 255;
+    // @ requires group.length() > 20 && group.length() < 255;
     public Response sendMessage(
                                 @HttpBody
                                         MocMessage message
@@ -126,14 +127,20 @@ public class MessageController {
         
         
         MocGroup groupObj = groupService.getGroupByName(authenticatedUser, group);
+        
         if (groupObj != null) {
             
             
             message.setUserGroup(userGroupService.getByUserAndGroup(authenticatedUser, groupObj));
             messageService.sendMessage(message);
+            
             return Response.ok().build();
+            
         } else {
+            
+            
             return Response.status(Response.Status.NO_CONTENT).build();
+            
         }
 
     }
@@ -149,6 +156,7 @@ public class MessageController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     //@ requires id > 0;
+    //@ requires id <2;
     public MocMessage getMessage(@Resource  @PathParam("id") long id) throws NoContentException {
 
             MocMessage message = messageService.getByID( id);

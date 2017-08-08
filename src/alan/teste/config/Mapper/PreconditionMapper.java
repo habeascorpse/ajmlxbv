@@ -5,36 +5,31 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.jmlspecs.ajmlrac.runtime.JMLEntryPreconditionError;
+import org.aspectjml.ajmlrac.runtime.JMLEntryPreconditionError;
 
 import alan.teste.entities.Message;
-import com.auth0.jwt.internal.org.apache.commons.lang3.exception.ExceptionUtils;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
 @Provider
 public class PreconditionMapper implements ExceptionMapper<JMLEntryPreconditionError> {
-    
-    @Context private HttpServletRequest request;
+
+    @Context
+    private HttpServletRequest request;
 
     @Override
     public Response toResponse(JMLEntryPreconditionError ex) {
 
-        
         try {
-            
             ex.printStackTrace();
             Message msg = AjmlEntryParserMessage.parser(ex.getMessage());
-            msg.setUri(request.getRequestURL().toString()+"?"+request.getQueryString());
-            
+            msg.setUri(request.getRequestURL().toString() + "?" + request.getQueryString());
+
             return Response.status(msg.getErrorCode()).entity(msg).build();
-            
-        } catch (ClassNotFoundException ex1) {
-            
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        } 
+        } catch (ClassNotFoundException e2) {
+            return null;
+        }
+
     }
 
 }

@@ -3,7 +3,7 @@ package alan.teste.config;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import org.jmlspecs.ajmlrac.runtime.JMLExceptionalPostconditionError;
+import org.aspectjml.ajmlrac.runtime.JMLExceptionalPostconditionError;
 
 import alan.teste.entities.Message;
 

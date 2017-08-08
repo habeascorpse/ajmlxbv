@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.aspectjml.lang.annotation.Pure;
 
 /**
  *
@@ -74,8 +75,10 @@ public class MocMessage implements Serializable {
     }
 
     @Transient
-    public int getLength() {
-        return length;
+    
+    public /*@ pure @*/ int getLength() {
+        System.out.println("Tamanho:"+text.length());
+        return 2;
     }
     
 

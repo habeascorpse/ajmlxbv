@@ -8,7 +8,7 @@ package alan.teste.config.Mapper;
 import alan.teste.entities.Message;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import org.jmlspecs.ajmlrac.runtime.JMLExitExceptionalPostconditionError;
+import org.aspectjml.ajmlrac.runtime.JMLExitExceptionalPostconditionError;
 
 /**
  *
